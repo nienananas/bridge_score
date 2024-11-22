@@ -44,11 +44,11 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                   NavigationRailDestination(
                     icon: Icon(Icons.text_snippet),
-                    label: Text('Favorites'),
+                    label: Text('Regeln'),
                   ),
                   NavigationRailDestination(
                     icon: Icon(CupertinoIcons.burn),
-                    label: Text('Favorites'),
+                    label: Text('Gefahr'),
                   ),
                 ],
                 selectedIndex: selectedIndex,

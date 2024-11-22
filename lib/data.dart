@@ -65,19 +65,21 @@ enum Multipliers {
 class Evaluator {
   final Colour colour;
   final Multipliers multipliers;
-  final int value;
-  final bool won;
+  final int called;
+  final int made;
   final bool danger;
 
   const Evaluator({
     required this.colour,
     required this.multipliers,
-    required this.value,
-    required this.won,
+    required this.called,
+    required this.made,
     required this.danger
   });
 
   int evaluate() {
+    if (made >= called) {
+    }
     return 0;
   }
 }

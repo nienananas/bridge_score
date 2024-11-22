@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 
 class DiscreteSlider extends StatelessWidget {
-  const DiscreteSlider({super.key,
-    required this.moved,
-    required this.value,
-    required this.min,
-    required this.max, required this.label});
+  const DiscreteSlider(
+      {super.key,
+      required this.moved,
+      required this.value,
+      required this.min,
+      required this.max,
+      required this.label});
 
-  final Function(int) moved;
+  final Function(double) moved;
   final double value;
   final int min;
   final int max;
@@ -17,14 +19,14 @@ class DiscreteSlider extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Text("$label: $value"),
+        Text("$label: ${value.toInt()}"),
         Slider(
             value: value,
             divisions: max - min,
             min: min.toDouble(),
-            max: min.toDouble(),
+            max: max.toDouble(),
             onChanged: (value) {
-              moved(value.round());
+              moved(value);
             }),
       ],
     );

@@ -36,7 +36,7 @@ class _DangerPageState extends State<DangerPage> {
               text = [
                 "Niemand in Gefahr",
                 "NS in Gefahr",
-                "OS in Gefahr",
+                "OW in Gefahr",
                 "Alle in Gefahr!"
               ][rand];
             });
