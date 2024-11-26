@@ -1,5 +1,6 @@
-import 'package:bridge_score/data.dart';
+import 'package:bridge_score/model/data.dart';
 import 'package:bridge_score/pages/home_page.dart';
+import 'package:bridge_score/theme/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -18,7 +19,7 @@ class MyApp extends StatelessWidget {
         title: 'Bridge App',
         theme: ThemeData(
           useMaterial3: true,
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.blueAccent),
+          colorScheme: MaterialTheme.lightScheme(),
         ),
         home: MyHomePage(),
       ),
@@ -28,7 +29,7 @@ class MyApp extends StatelessWidget {
 
 class MyAppState extends ChangeNotifier {
   var colour = Colour.club;
-  var multiplier = Multipliers.no;
+  var multiplier = Multiplier.no;
   var danger = false;
   var called = 1;
   var made = 7;

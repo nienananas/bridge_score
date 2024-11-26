@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class DiscreteSlider extends StatelessWidget {
   const DiscreteSlider(
@@ -26,6 +27,7 @@ class DiscreteSlider extends StatelessWidget {
             min: min.toDouble(),
             max: max.toDouble(),
             onChanged: (value) {
+              HapticFeedback.vibrate();
               moved(value);
             }),
       ],

@@ -17,7 +17,7 @@ class _DangerPageState extends State<DangerPage> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final style = theme.textTheme.displaySmall!.copyWith(
-      color: theme.colorScheme.onPrimary,
+      color: theme.colorScheme.onPrimaryFixed,
     );
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,

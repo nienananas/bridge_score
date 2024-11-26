@@ -31,7 +31,7 @@ enum Colour {
       value: 30,
       name: "NT",
       seventhValue: 40,
-      color: Colors.grey);
+      color: Colors.black);
 
   const Colour({
     required this.value,
@@ -48,38 +48,20 @@ enum Colour {
   final Color color;
 }
 
-enum Multipliers {
-  no(symbol: "Nichts", value: 1),
-  contra(symbol: "Kontra", value: 2),
-  re(symbol: "Re", value: 4);
+enum Multiplier {
+  no(symbol: "Nichts", value: 1, bonus: 0),
+  contra(symbol: "Kontra", value: 2, bonus: 50),
+  re(symbol: "Re", value: 4, bonus: 100);
 
-  const Multipliers({
+  const Multiplier({
     required this.value,
     required this.symbol,
+    required this.bonus,
   });
 
   final int value;
   final String symbol;
+  final int bonus;
 }
 
-class Evaluator {
-  final Colour colour;
-  final Multipliers multipliers;
-  final int called;
-  final int made;
-  final bool danger;
 
-  const Evaluator({
-    required this.colour,
-    required this.multipliers,
-    required this.called,
-    required this.made,
-    required this.danger
-  });
-
-  int evaluate() {
-    if (made >= called) {
-    }
-    return 0;
-  }
-}
