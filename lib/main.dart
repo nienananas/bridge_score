@@ -1,8 +1,12 @@
 import 'package:bridge_score/model/data.dart';
+import 'package:bridge_score/model/evaluator.dart';
 import 'package:bridge_score/pages/home_page.dart';
 import 'package:bridge_score/theme/theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+
+//TODO: Abrechnung implementieren
 
 void main() {
   runApp(MyApp());
@@ -50,8 +54,14 @@ class MyAppState extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setResult(int result) {
-    this.result = result;
+  void evaluate() {
+    result = Evaluator(
+      colour: colour,
+      multiplier: multiplier,
+      called: called,
+      made: made,
+      danger: danger,
+    ).evaluate();
     notifyListeners();
   }
 }

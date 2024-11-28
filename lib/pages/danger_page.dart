@@ -35,7 +35,7 @@ class _DangerPageState extends State<DangerPage> {
               var rand = Random().nextInt(4);
               text = [
                 "Niemand in Gefahr",
-                "NS in Gefahr",
+                "Nord-Süd in Gefahr",
                 "OW in Gefahr",
                 "Alle in Gefahr!"
               ][rand];

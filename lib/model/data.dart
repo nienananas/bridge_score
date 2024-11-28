@@ -64,4 +64,22 @@ enum Multiplier {
   final int bonus;
 }
 
+enum Team {
+  ns,
+  ow,
+}
 
+enum DangerSituation {
+  ns(dangeredParties: [Team.ns], label: "Nord-Süd in Gefahr"),
+  ow(dangeredParties: [Team.ow], label: "OW in Gefahr"),
+  all(dangeredParties: [Team.ns, Team.ow], label: "Alle in Gefahr"),
+  none(dangeredParties: [], label: "Niemand in Gefahr");
+
+  const DangerSituation({
+    required this.dangeredParties,
+    required this.label,
+  });
+
+  final List<Team> dangeredParties;
+  final String label;
+}

@@ -20,7 +20,7 @@ class DiscreteSlider extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Text("$label: ${value.toInt()}"),
+        Text("$label: ${value.toInt()}", style: Theme.of(context).textTheme.bodyLarge,),
         Slider(
             value: value,
             divisions: max - min,
