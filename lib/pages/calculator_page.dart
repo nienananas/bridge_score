@@ -7,6 +7,7 @@ import '../model/data.dart';
 import '../main.dart';
 import '../model/evaluator.dart';
 import '../widgets/discrete_slider.dart';
+import '../widgets/my_segmented_button.dart';
 
 class CalculatorPage extends StatefulWidget {
   @override
@@ -22,6 +23,7 @@ class _CalculatorPageState extends State<CalculatorPage> {
       HapticFeedback.vibrate();
       setState(() {
         appState.colour = Colour.values[selected.first];
+        appState.evaluate();
       });
     }
 
@@ -29,15 +31,13 @@ class _CalculatorPageState extends State<CalculatorPage> {
       HapticFeedback.vibrate();
       setState(() {
         appState.multiplier = Multiplier.values[selected.first];
+        appState.evaluate();
       });
     }
 
     var colourSegments = Colour.values
         .map((c) => ButtonSegment(
-            icon: Icon(
-              c.icon,
-              color: c.color,
-            ),
+            icon: Icon(c.icon, color: c.color),
             label:
                 (MediaQuery.sizeOf(context).width >= 800) ? Text(c.name) : null,
             value: c.index))
@@ -56,7 +56,8 @@ class _CalculatorPageState extends State<CalculatorPage> {
             BorderedBox(children: [
               const SizedBox(height: 10),
               DiscreteSlider(
-                moved: appState.setCalled,
+                moved: (value) =>
+                    {appState.setCalled(value), appState.evaluate()},
                 value: appState.called.toDouble(),
                 min: 1,
                 max: 7,
@@ -91,8 +92,8 @@ class _CalculatorPageState extends State<CalculatorPage> {
                       onChanged: (newDanger) {
                         HapticFeedback.vibrate();
                         if (newDanger == null) return;
-
                         appState.toggleDanger(newDanger);
+                        appState.evaluate();
                       }),
                   const SizedBox(height: 10),
                   Text("In Gefahr ",
@@ -100,19 +101,14 @@ class _CalculatorPageState extends State<CalculatorPage> {
                 ],
               ),
               DiscreteSlider(
-                moved: appState.setMade,
+                moved: (value) =>
+                    {appState.setMade(value), appState.evaluate()},
                 value: appState.made.toDouble(),
                 min: 0,
                 max: 13,
                 label: "Gemacht",
               ),
             ]),
-            ElevatedButton(
-                child: Text("Ergebnis",
-                    style: Theme.of(context).textTheme.bodyLarge),
-                onPressed: () {
-                  appState.evaluate();
-                }),
             BorderedBox(
               children: [
                 Text(
@@ -121,52 +117,13 @@ class _CalculatorPageState extends State<CalculatorPage> {
                       : "Ergebnis: ${appState.result}",
                   style: Theme.of(context).textTheme.bodyLarge,
                 ),
+                ElevatedButton(
+                    onPressed: appState.evaluate, child: Text("Ergebnis")),
               ],
             ),
           ],
         ),
       ),
-    );
-  }
-}
-
-class MySegmentedButton extends StatelessWidget {
-  const MySegmentedButton({
-    super.key,
-    required this.segments,
-    required this.function,
-    required this.initialSelection,
-  });
-
-  final List<ButtonSegment<int>> segments;
-  final Function(Set<int>) function;
-  final Set<int> initialSelection;
-
-  @override
-  Widget build(BuildContext context) {
-    return SegmentedButton(
-      style: ButtonStyle(
-        shape: WidgetStateProperty.all(
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0))),
-        side: WidgetStateProperty.all(BorderSide(
-            color: Theme.of(context).colorScheme.outline,
-            style: BorderStyle.solid,
-            width: 1)),
-        backgroundColor: WidgetStateProperty.resolveWith<Color?>((states) {
-          if (states.contains(WidgetState.selected)) {
-            return Theme.of(context)
-                .colorScheme
-                .primary; // Highlighted color for selected segment
-          }
-          return Theme.of(context)
-              .colorScheme
-              .secondary; // Default background color for unselected segments
-        }),
-      ),
-      segments: segments,
-      selected: initialSelection,
-      showSelectedIcon: false,
-      onSelectionChanged: function,
     );
   }
 }
