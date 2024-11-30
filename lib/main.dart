@@ -1,15 +1,14 @@
+import 'dart:math';
+
 import 'package:bridge_score/model/data.dart';
 import 'package:bridge_score/model/evaluator.dart';
 import 'package:bridge_score/pages/home_page.dart';
 import 'package:bridge_score/theme/theme.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
-//TODO: Abrechnung implementieren
-
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -37,7 +36,13 @@ class MyAppState extends ChangeNotifier {
   var danger = false;
   var called = 1;
   var made = 7;
-  int? result;
+  int currentResult = 0;
+
+  var dangerSituation = DangerSituation.none;
+  var currentTeam = Team.ns;
+  var score = const Score(nsScore: 0, owScore: 0);
+  List<ArchiveScore> oldScores = [];
+
 
   void toggleDanger(bool newDanger) {
     danger = newDanger;
@@ -55,13 +60,37 @@ class MyAppState extends ChangeNotifier {
   }
 
   void evaluate() {
-    result = Evaluator(
+    currentResult = Evaluator(
       colour: colour,
       multiplier: multiplier,
       called: called,
       made: made,
       danger: danger,
     ).evaluate();
+    notifyListeners();
+  }
+
+  void updateScore() {
+    evaluate();
+    oldScores.add(ArchiveScore(score: score, danger: dangerSituation));
+    if (currentTeam == Team.ns) {
+      score = score.copyWith(nsScore: score.nsScore + currentResult);
+    } else if (currentTeam == Team.ow) {
+      score = score.copyWith(owScore: score.owScore + currentResult);
+    }
+    rollDanger();
+    notifyListeners();
+  }
+
+  void rollBackScore() {
+    var oldScore = oldScores.removeLast();
+    score = oldScore.score;
+    dangerSituation = oldScore.danger;
+    notifyListeners();
+  }
+
+  void rollDanger() {
+    dangerSituation = DangerSituation.values[Random().nextInt(4)];
     notifyListeners();
   }
 }

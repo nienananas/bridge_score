@@ -18,6 +18,8 @@ class _CalculatorPageState extends State<CalculatorPage> {
   @override
   Widget build(BuildContext context) {
     var appState = context.watch<MyAppState>();
+    appState.evaluate();
+    appState.rollDanger();
 
     void updateSelectedColour(Set<int> selected) {
       HapticFeedback.vibrate();
@@ -112,9 +114,9 @@ class _CalculatorPageState extends State<CalculatorPage> {
             BorderedBox(
               children: [
                 Text(
-                  (appState.result == null)
+                  (appState.currentResult == null)
                       ? "Gib deine Daten ein"
-                      : "Ergebnis: ${appState.result}",
+                      : "Ergebnis: ${appState.currentResult}",
                   style: Theme.of(context).textTheme.bodyLarge,
                 ),
                 ElevatedButton(

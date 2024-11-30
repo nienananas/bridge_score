@@ -65,12 +65,18 @@ enum Multiplier {
 }
 
 enum Team {
-  ns,
-  ow,
+  ns(name: "Nord-Sus"),
+  ow(name: "Ost-West");
+
+  const Team({
+    required this.name,
+  });
+
+  final String name;
 }
 
 enum DangerSituation {
-  ns(dangeredParties: [Team.ns], label: "Nord-Süd in Gefahr"),
+  ns(dangeredParties: [Team.ns], label: "Nord-Sus in Gefahr"),
   ow(dangeredParties: [Team.ow], label: "OW in Gefahr"),
   all(dangeredParties: [Team.ns, Team.ow], label: "Alle in Gefahr"),
   none(dangeredParties: [], label: "Niemand in Gefahr");
@@ -82,4 +88,31 @@ enum DangerSituation {
 
   final List<Team> dangeredParties;
   final String label;
+}
+
+class ArchiveScore {
+  const ArchiveScore({
+    required this.score,
+    required this.danger,
+  });
+
+  final Score score;
+  final DangerSituation danger;
+}
+
+class Score {
+  const Score({
+    required this.nsScore,
+    required this.owScore,
+  });
+
+  final int nsScore;
+  final int owScore;
+
+  Score copyWith({int? nsScore, int? owScore}) {
+    return Score(
+      nsScore: nsScore ?? this.nsScore,
+      owScore: owScore ?? this.nsScore,
+    );
+  }
 }
