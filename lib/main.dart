@@ -93,4 +93,16 @@ class MyAppState extends ChangeNotifier {
     dangerSituation = DangerSituation.values[Random().nextInt(4)];
     notifyListeners();
   }
+
+  void changeTeams(Team team) {
+    currentTeam = team;
+    notifyListeners();
+  }
+
+  void resetGame() {
+    score = const Score(nsScore: 0, owScore: 0);
+    oldScores = [];
+    dangerSituation = DangerSituation.none;
+    notifyListeners();
+  }
 }

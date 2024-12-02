@@ -23,9 +23,9 @@ class RulesPage extends StatelessWidget {
               Text("Bridge-Abrechnungs-Regeln:", style: headLineStyle),
               Expanded(
                   flex: 1,
-                  child: new SingleChildScrollView(
+                  child: SingleChildScrollView(
                       scrollDirection: Axis.vertical, //.horizontal
-                      child: new Text(
+                      child: Text(
                           """Bei der Abrechnung ist allein die Anzahl der Stiche jeder Partei von Bedeutung. Punktwerte von Karten, die bei der Abrechnung relevant wären, gibt es nicht. Ein Spiel ist vom Alleinspieler gewonnen, wenn er mindestens so viel Stiche macht wie im Kontrakt, d. h. im letzten abgegebenen Gebot, versprochen. Zusätzliche Stiche heißen Überstiche. Macht er weniger Stiche, dann gewinnt die Gegenpartei. In diesem Fall wird die Differenz zwischen angesagter Stichzahl und tatsächlich gemachter Stichzahl Faller genannt.
                       Zusätzlich gibt es das Konzept der Gefahrenlage (engl. vulnerability). Eine Partei kann entweder in Gefahr oder nicht in Gefahr sein. Vier Konstellationen sind möglich.
                       keine Partei in Gefahr, Nord-Süd in Gefahr, OW in Gefahr, beide Parteien in Gefahr

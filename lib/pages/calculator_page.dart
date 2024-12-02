@@ -3,9 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
-import '../model/data.dart';
 import '../main.dart';
-import '../model/evaluator.dart';
+import '../model/data.dart';
 import '../widgets/discrete_slider.dart';
 import '../widgets/my_segmented_button.dart';
 
@@ -19,7 +18,6 @@ class _CalculatorPageState extends State<CalculatorPage> {
   Widget build(BuildContext context) {
     var appState = context.watch<MyAppState>();
     appState.evaluate();
-    appState.rollDanger();
 
     void updateSelectedColour(Set<int> selected) {
       HapticFeedback.vibrate();
@@ -45,16 +43,23 @@ class _CalculatorPageState extends State<CalculatorPage> {
             value: c.index))
         .toList();
 
-    var multiplierSegments = Multiplier.values
-        .map((m) => ButtonSegment(label: Text(m.symbol), value: m.index))
-        .toList();
-
     return Center(
       child: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,
           children: [
+            //Teams Segmented Button
+            MySegmentedButton(
+              segments: Team.values
+                  .map(
+                      (t) => ButtonSegment(label: Text(t.name), value: t.index))
+                  .toList(),
+              function: (selected) =>
+                  appState.changeTeams(Team.values[selected.first]),
+              initialSelection: {appState.currentTeam.index},
+            ),
+            //Current game characteristics interface
             BorderedBox(children: [
               const SizedBox(height: 10),
               DiscreteSlider(
@@ -80,7 +85,10 @@ class _CalculatorPageState extends State<CalculatorPage> {
               Flexible(
                 fit: FlexFit.loose,
                 child: MySegmentedButton(
-                  segments: multiplierSegments,
+                  segments: Multiplier.values
+                      .map((m) =>
+                          ButtonSegment(label: Text(m.symbol), value: m.index))
+                      .toList(),
                   initialSelection: {appState.multiplier.index},
                   function: updateSelectedMultiplier,
                 ),
@@ -102,6 +110,7 @@ class _CalculatorPageState extends State<CalculatorPage> {
                       style: Theme.of(context).textTheme.bodyLarge),
                 ],
               ),
+              Text("Gefahrensituation: ${appState.dangerSituation.label}"),
               DiscreteSlider(
                 moved: (value) =>
                     {appState.setMade(value), appState.evaluate()},
@@ -114,13 +123,36 @@ class _CalculatorPageState extends State<CalculatorPage> {
             BorderedBox(
               children: [
                 Text(
-                  (appState.currentResult == null)
-                      ? "Gib deine Daten ein"
-                      : "Ergebnis: ${appState.currentResult}",
+                  "Ergebnis: ${appState.currentResult}",
                   style: Theme.of(context).textTheme.bodyLarge,
                 ),
-                ElevatedButton(
-                    onPressed: appState.evaluate, child: Text("Ergebnis")),
+              ],
+            ),
+            BorderedBox(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ElevatedButton(
+                        onPressed: appState.updateScore,
+                        child: const Text("Spiel eintragen")),
+                    ElevatedButton(
+                      onPressed: appState.rollDanger,
+                      child: const Text("Spiel zurücknehmen"),
+                    ),
+                    ElevatedButton(
+                      onPressed: appState.resetGame,
+                      child: const Text("Spiel zurücksetzen"),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+            BorderedBox(
+              children: [
+                Text("${Team.ns.name}: ${appState.score.nsScore}"),
+                const SizedBox(height: 10),
+                Text("${Team.ow.name}: ${appState.score.owScore}"),
               ],
             ),
           ],

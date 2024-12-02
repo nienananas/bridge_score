@@ -112,7 +112,7 @@ class Score {
   Score copyWith({int? nsScore, int? owScore}) {
     return Score(
       nsScore: nsScore ?? this.nsScore,
-      owScore: owScore ?? this.nsScore,
+      owScore: owScore ?? this.owScore,
     );
   }
 }
