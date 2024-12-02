@@ -33,7 +33,6 @@ class MyApp extends StatelessWidget {
 class MyAppState extends ChangeNotifier {
   var colour = Colour.club;
   var multiplier = Multiplier.no;
-  var danger = false;
   var called = 1;
   var made = 7;
   int currentResult = 0;
@@ -42,12 +41,6 @@ class MyAppState extends ChangeNotifier {
   var currentTeam = Team.ns;
   var score = const Score(nsScore: 0, owScore: 0);
   List<ArchiveScore> oldScores = [];
-
-
-  void toggleDanger(bool newDanger) {
-    danger = newDanger;
-    notifyListeners();
-  }
 
   void setCalled(double value) {
     called = value.round();
@@ -65,7 +58,7 @@ class MyAppState extends ChangeNotifier {
       multiplier: multiplier,
       called: called,
       made: made,
-      danger: danger,
+      danger: dangerSituation.dangeredParties.contains(currentTeam),
     ).evaluate();
     notifyListeners();
   }

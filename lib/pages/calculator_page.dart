@@ -49,6 +49,11 @@ class _CalculatorPageState extends State<CalculatorPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,
           children: [
+            BorderedBox(children: [
+              Text(
+                  style: Theme.of(context).textTheme.bodyLarge,
+                  "Gefahrensituation: ${appState.dangerSituation.label}"),
+            ]),
             //Teams Segmented Button
             MySegmentedButton(
               segments: Team.values
@@ -94,23 +99,6 @@ class _CalculatorPageState extends State<CalculatorPage> {
                 ),
               ),
               const SizedBox(height: 10),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Checkbox(
-                      value: appState.danger,
-                      onChanged: (newDanger) {
-                        HapticFeedback.vibrate();
-                        if (newDanger == null) return;
-                        appState.toggleDanger(newDanger);
-                        appState.evaluate();
-                      }),
-                  const SizedBox(height: 10),
-                  Text("In Gefahr ",
-                      style: Theme.of(context).textTheme.bodyLarge),
-                ],
-              ),
-              Text("Gefahrensituation: ${appState.dangerSituation.label}"),
               DiscreteSlider(
                 moved: (value) =>
                     {appState.setMade(value), appState.evaluate()},
@@ -137,7 +125,7 @@ class _CalculatorPageState extends State<CalculatorPage> {
                         onPressed: appState.updateScore,
                         child: const Text("Spiel eintragen")),
                     ElevatedButton(
-                      onPressed: appState.rollDanger,
+                      onPressed: appState.rollBackScore,
                       child: const Text("Spiel zurücknehmen"),
                     ),
                     ElevatedButton(

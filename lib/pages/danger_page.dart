@@ -1,6 +1,9 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../main.dart';
 
 ///
 /// Page for rolling a random danger value
@@ -11,10 +14,9 @@ class DangerPage extends StatefulWidget {
 }
 
 class _DangerPageState extends State<DangerPage> {
-  var text = "Würfeln für Gefahr";
-
   @override
   Widget build(BuildContext context) {
+    var appState = context.watch<MyAppState>();
     final theme = Theme.of(context);
     final style = theme.textTheme.displaySmall!.copyWith(
       color: theme.colorScheme.onPrimaryFixed,
@@ -24,23 +26,13 @@ class _DangerPageState extends State<DangerPage> {
       children: [
         Center(
             child: Text(
-              text,
+              "Gefahrensituation: ${appState.dangerSituation.label}",
               style: style,
             )),
         const SizedBox(height: 10),
         ElevatedButton(
+          onPressed: appState.rollDanger,
           child: const Text("Würfeln"),
-          onPressed: () {
-            setState(() {
-              var rand = Random().nextInt(4);
-              text = [
-                "Niemand in Gefahr",
-                "Nord-Süd in Gefahr",
-                "OW in Gefahr",
-                "Alle in Gefahr!"
-              ][rand];
-            });
-          },
         )
       ],
     );
