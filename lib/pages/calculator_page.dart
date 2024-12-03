@@ -1,6 +1,5 @@
 import 'package:bridge_score/widgets/bordered_box.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 import '../main.dart';
@@ -38,8 +37,12 @@ class _CalculatorPageState extends State<CalculatorPage> {
           children: [
             BorderedBox(children: [
               Text(
-                  style: textStyle,
-                  "Gefahrensituation: ${appState.dangerSituation.label}"),
+                "Gefahrensituation: ${appState.dangerSituation.label}",
+                style: appState.dangerSituation.dangeredParties
+                        .contains(appState.currentTeam)
+                    ? textStyle!.copyWith(color: Colors.red, fontSize: 20)
+                    : textStyle,
+              )
             ]),
             //Teams Segmented Button
             MySegmentedButton(
@@ -136,9 +139,11 @@ class _CalculatorPageState extends State<CalculatorPage> {
             ),
             BorderedBox(
               children: [
-                Text("${Team.ns.name}: ${appState.score.nsScore}", style: textStyle),
+                Text("${Team.ns.name}: ${appState.score.nsScore}",
+                    style: textStyle),
                 const SizedBox(height: 10),
-                Text("${Team.ow.name}: ${appState.score.owScore}", style: textStyle),
+                Text("${Team.ow.name}: ${appState.score.owScore}",
+                    style: textStyle),
               ],
             ),
           ],
