@@ -9,6 +9,8 @@ import '../widgets/discrete_slider.dart';
 import '../widgets/my_segmented_button.dart';
 
 class CalculatorPage extends StatefulWidget {
+  const CalculatorPage({super.key});
+
   @override
   State<CalculatorPage> createState() => _CalculatorPageState();
 }
@@ -17,23 +19,8 @@ class _CalculatorPageState extends State<CalculatorPage> {
   @override
   Widget build(BuildContext context) {
     var appState = context.watch<MyAppState>();
-    appState.evaluate();
 
-    void updateSelectedColour(Set<int> selected) {
-      HapticFeedback.vibrate();
-      setState(() {
-        appState.colour = Colour.values[selected.first];
-        appState.evaluate();
-      });
-    }
-
-    void updateSelectedMultiplier(Set<int> selected) {
-      HapticFeedback.vibrate();
-      setState(() {
-        appState.multiplier = Multiplier.values[selected.first];
-        appState.evaluate();
-      });
-    }
+    var textStyle = Theme.of(context).textTheme.bodyLarge;
 
     var colourSegments = Colour.values
         .map((c) => ButtonSegment(
@@ -51,7 +38,7 @@ class _CalculatorPageState extends State<CalculatorPage> {
           children: [
             BorderedBox(children: [
               Text(
-                  style: Theme.of(context).textTheme.bodyLarge,
+                  style: textStyle,
                   "Gefahrensituation: ${appState.dangerSituation.label}"),
             ]),
             //Teams Segmented Button
@@ -68,8 +55,7 @@ class _CalculatorPageState extends State<CalculatorPage> {
             BorderedBox(children: [
               const SizedBox(height: 10),
               DiscreteSlider(
-                moved: (value) =>
-                    {appState.setCalled(value), appState.evaluate()},
+                moved: appState.setCalled,
                 value: appState.called.toDouble(),
                 min: 1,
                 max: 7,
@@ -82,7 +68,7 @@ class _CalculatorPageState extends State<CalculatorPage> {
                 fit: FlexFit.loose,
                 child: MySegmentedButton(
                   segments: colourSegments,
-                  function: updateSelectedColour,
+                  function: appState.updateSelectedColour,
                   initialSelection: {appState.colour.index},
                 ),
               ),
@@ -95,13 +81,12 @@ class _CalculatorPageState extends State<CalculatorPage> {
                           ButtonSegment(label: Text(m.symbol), value: m.index))
                       .toList(),
                   initialSelection: {appState.multiplier.index},
-                  function: updateSelectedMultiplier,
+                  function: appState.updateSelectedMultiplier,
                 ),
               ),
               const SizedBox(height: 10),
               DiscreteSlider(
-                moved: (value) =>
-                    {appState.setMade(value), appState.evaluate()},
+                moved: appState.setMade,
                 value: appState.made.toDouble(),
                 min: 0,
                 max: 13,
@@ -112,7 +97,7 @@ class _CalculatorPageState extends State<CalculatorPage> {
               children: [
                 Text(
                   "Ergebnis: ${appState.currentResult}",
-                  style: Theme.of(context).textTheme.bodyLarge,
+                  style: textStyle,
                 ),
               ],
             ),
@@ -121,26 +106,39 @@ class _CalculatorPageState extends State<CalculatorPage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    ElevatedButton(
-                        onPressed: appState.updateScore,
-                        child: const Text("Spiel eintragen")),
-                    ElevatedButton(
-                      onPressed: appState.rollBackScore,
-                      child: const Text("Spiel zurücknehmen"),
+                    const SizedBox(width: 5),
+                    Expanded(
+                      flex: 1,
+                      child: ElevatedButton(
+                          onPressed: appState.updateScore,
+                          child: const Text("Spiel eintragen")),
                     ),
-                    ElevatedButton(
-                      onPressed: appState.resetGame,
-                      child: const Text("Spiel zurücksetzen"),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      flex: 1,
+                      child: ElevatedButton(
+                        onPressed: appState.rollBackScore,
+                        child: const Text("Spiel zurücknehmen"),
+                      ),
                     ),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      flex: 1,
+                      child: ElevatedButton(
+                        onPressed: appState.resetGame,
+                        child: const Text("Spiel zurücksetzen"),
+                      ),
+                    ),
+                    const SizedBox(width: 5),
                   ],
                 ),
               ],
             ),
             BorderedBox(
               children: [
-                Text("${Team.ns.name}: ${appState.score.nsScore}"),
+                Text("${Team.ns.name}: ${appState.score.nsScore}", style: textStyle),
                 const SizedBox(height: 10),
-                Text("${Team.ow.name}: ${appState.score.owScore}"),
+                Text("${Team.ow.name}: ${appState.score.owScore}", style: textStyle),
               ],
             ),
           ],

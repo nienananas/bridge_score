@@ -1,3 +1,4 @@
+import 'package:bridge_score/pages/scoreboard_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -26,6 +27,9 @@ class _MyHomePageState extends State<MyHomePage> {
       case 2:
         page = DangerPage();
         break;
+      case 3:
+        page = ScoreboardPage();
+        break;
       default:
         throw UnimplementedError('no widget for $selectedIndex');
     }
@@ -49,6 +53,10 @@ class _MyHomePageState extends State<MyHomePage> {
                   NavigationRailDestination(
                     icon: Icon(CupertinoIcons.burn),
                     label: Text('Gefahr'),
+                  ),
+                  NavigationRailDestination(
+                    icon: Icon(Icons.list_alt),
+                    label: Text('Scoreboard'),
                   ),
                 ],
                 selectedIndex: selectedIndex,
